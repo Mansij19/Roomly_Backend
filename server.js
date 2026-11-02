@@ -1,8 +1,8 @@
-
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const indexRoutes = require("./src/routes/index");
 const app = express();
 
 app.use(cors({
@@ -11,30 +11,14 @@ app.use(cors({
 
 app.use(express.json());
 
-// Test route
-app.get("/", (req, res) => {
-  res.json({
-    message: "Hotel Management Backend is running!",
-  });
-});
+app.use('/api', indexRoutes);
 
-// Example API route
-app.get("/api/hotels", (req, res) => {
-  res.json([
-    {
-      id: 1,
-      name: "Grand Palace Hotel",
-      location: "Indore",
-      price: 2500,
-    },
-    {
-      id: 2,
-      name: "Royal Stay",
-      location: "Bhopal",
-      price: 1800,
-    },
-  ]);
-});
+// login/signup flow:
+// client -> auth request -> route -> controller(identity verification, credentials signing, token generation) -> response -> client access.
+
+// after login/signup flow:
+// client acessing -> request(token) -> route -> auth middleware(token verification, access granted/revoke) -> client acess granted -> routing -> contoller -> reponse.
+
 
 const PORT = process.env.PORT || 5000;
 
